@@ -38,6 +38,10 @@ const NotesPage = async ({ params }: Props) => {
     const cookieStore = await cookies();
     const cookieString = cookieStore.getAll().map(c => `${c.name}=${c.value}`).join('; ');
 
+    console.log('Cookies on server:', cookieString);
+const data = await fetchNotes(cookieString, { query: '', page: 1, tag });
+console.log('Fetched notes:', data);
+
     await queryClient.prefetchQuery({
         queryKey: ['notes', '', 1, tag],
         queryFn: () => fetchNotes(cookieString, { query: '', page: 1, ...(tag !== 'All' ? { tag } : {}) })

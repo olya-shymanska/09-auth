@@ -25,6 +25,7 @@ export const getMe = async (cookies: string): Promise<User> => {
 }
 
 export const fetchNotes = async (cookies: string, { query, page, tag }: fetchNoteProps): Promise<GetNotesResponse> => {
+
     const response = await api.get<GetNotesResponse>('/notes', {
         headers: { cookie: cookies },
         params: { search: query, page, perPage: 12, ...(tag ? { tag } : {}) },
