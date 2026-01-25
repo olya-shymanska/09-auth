@@ -3,6 +3,7 @@ import css from "./Header.module.css"
 import { AuthNavigation } from "../AuthNavigation/AuthNavigation"
 
 export default function Header() {
+ 
     return <header className={css.header}>
     <Link href="/" aria-label="Home">
       NoteHub

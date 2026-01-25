@@ -47,7 +47,11 @@ export default function SignIn () {
              </button>
            </div>
        
-           <p className={css.error}>{isError && error?.response?.data?.message ? error.response.data.message : ''}</p>
+           {isError && (
+  <p className={css.error}>
+    {error?.response?.data?.message ?? 'Invalid email or password'}
+  </p>
+)}
          </form>
        </main>
     )

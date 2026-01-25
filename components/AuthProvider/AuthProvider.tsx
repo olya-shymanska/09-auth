@@ -4,7 +4,6 @@ import { authStore } from "@/lib/store/authStore"
 import { usePathname } from "next/navigation"
 import { useState, useEffect } from "react"
 import Loader from "../Loader/Loader"
-import { useRouter } from "next/navigation"
 
 type Props = {
     children: React.ReactNode
@@ -16,37 +15,31 @@ export const AuthProvider = ({ children }: Props) => {
 
     const { setUser, clearIsAuthenticated } = authStore(); 
 
-    const privateRoutes = ['/profile', '/notes'];
-    const publicRoutes = ['/sign-in', '/sign-up'];
-
     const pathname = usePathname();
 
-    const isPrivatePage = privateRoutes.some(route => pathname.startsWith(route));
-    const isPublicPage = publicRoutes.some(route => pathname.startsWith(route));
+    const privateRoutes = ['/profile', '/notes'];
 
-    const router = useRouter()
+    const isPrivatePage = privateRoutes.some(route => pathname.startsWith(route));
 
     useEffect(() => {
-        const fetchSession = async () => {
+        const verify = async () => {
             try {
                 setCheckingSession(true);
                 const userSession = await checkSession();
-                setUser(userSession);
-                if (isPublicPage && userSession) {
-                   router.push('/profile')
+                if (userSession) {
+                    setUser(userSession)
+                } else if (isPrivatePage) {
+                    clearIsAuthenticated()
                 }
-                setCheckingSession(false)
             } catch {
                 clearIsAuthenticated();
+            } finally {
                 setCheckingSession(false);
-                if (isPrivatePage) {
-                  router.push('/sign-in')
-                }
             }
         }
-        fetchSession();
-    }, [setUser, clearIsAuthenticated, isPrivatePage, isPublicPage, router]);
+        verify();
+    }, [setUser, clearIsAuthenticated, isPrivatePage]);
 
-    return (checkingSession ? <Loader /> : children );
+    return (checkingSession ? <Loader /> :  children);
 
 }

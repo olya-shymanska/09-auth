@@ -46,7 +46,12 @@ export default function SignUp () {
       </button>
     </div>
 
-         <p> {isError && error?.response?.data?.message ? error.response.data.message : ''}</p>
+    {isError && (
+  <p className={css.error}>
+    {error?.response?.data?.message ||
+      'Registration failed. Please check your email and password.'}
+  </p>
+)}
   </form>
 </main>
     )
