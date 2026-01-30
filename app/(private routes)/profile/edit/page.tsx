@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation"
 import { useMutation } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
 import { authStore } from "@/lib/store/authStore"
-import { updateMe } from "@/lib/clientApi"
+import { updateMe } from "@/lib/api/clientApi"
 import css from './ProfileEdit.module.css'
 import Image from "next/image"
 import { User } from "@/types/user"

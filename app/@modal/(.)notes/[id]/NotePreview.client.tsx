@@ -1,7 +1,7 @@
 'use client'
 import { useParams } from 'next/navigation'
 import { useQuery } from '@tanstack/react-query'
-import { getSingleNote } from '@/lib/clientApi'
+import { getSingleNote } from '@/lib/api/clientApi'
 import Modal from '@/components/Modal/Modal'
 import { useRouter } from 'next/navigation'
 import css from './NotePreview.module.css'

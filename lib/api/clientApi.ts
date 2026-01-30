@@ -1,4 +1,4 @@
-import { api } from "./api";
+import { api } from "./api/api";
 import { User } from "@/types/user";
 import { Note } from "@/types/note";
 import { NewNote } from "@/types/newNote";

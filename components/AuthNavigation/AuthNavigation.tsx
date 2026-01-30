@@ -2,7 +2,7 @@
 import { authStore } from "@/lib/store/authStore"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { logout } from "@/lib/clientApi"
+import { logout } from "@/lib/api/clientApi"
 import css from './AuthNavigation.module.css'
 
 export const AuthNavigation = () => {

@@ -1,4 +1,4 @@
-import { getMe } from "@/lib/serverApi";
+import { getMe } from "@/lib/api/serverApi";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers"
 import { User } from "@/types/user";
