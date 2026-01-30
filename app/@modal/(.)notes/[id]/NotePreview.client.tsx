@@ -1,10 +1,10 @@
 'use client'
-import css from '../../../notes/[id]/NoteDetails.module.css'
 import { useParams } from 'next/navigation'
 import { useQuery } from '@tanstack/react-query'
 import { getSingleNote } from '@/lib/clientApi'
 import Modal from '@/components/Modal/Modal'
 import { useRouter } from 'next/navigation'
+import css from './NotePreview.module.css'
 
 type NotePreviewProps = {
     propId?: string; 
