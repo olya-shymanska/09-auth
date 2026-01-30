@@ -1,7 +1,7 @@
 'use client'
 import { useRouter } from "next/navigation"
 import { authStore } from "@/lib/store/authStore"
-import { login } from "@/lib/clientApi";
+import { login } from "@/lib/api/clientApi";
 import { useMutation } from "@tanstack/react-query";
 import { User } from "@/types/user";
 import css from "./sign-in.module.css"
