@@ -18,7 +18,7 @@ const Profile = async () => {
 
      const cookieStore = await cookies();
         const cookieString = cookieStore.getAll().map(c => `${c.name}=${c.value}`).join('; ');
-    let user: User | null = null;
+        let user: User | null = null;
     let hasError = false;
     try {
         user = await getMe(cookieString);

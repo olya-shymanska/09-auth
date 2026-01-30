@@ -6,7 +6,7 @@ import { logout } from "@/lib/clientApi"
 import css from './AuthNavigation.module.css'
 
 export const AuthNavigation = () => {
-    const { isAuthenticated, clearIsAuthenticated, user } = authStore();
+    const { isAuthenticated, clearIsAuthenticated, user, checkingSession } = authStore();
     const router = useRouter();
 
     const onLogoutClick = async () => {
@@ -14,6 +14,8 @@ export const AuthNavigation = () => {
         clearIsAuthenticated();
         router.push('/sign-in');
     };
+
+    if (checkingSession) return null;
 
     if (!isAuthenticated || !user) {
         return (
@@ -47,3 +49,4 @@ export const AuthNavigation = () => {
         </>
       );
     };
+

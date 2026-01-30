@@ -1,6 +1,7 @@
 import { api } from "./api";
 import { User } from "@/types/user";
 import { Note } from "@/types/note";
+import { cookies } from "next/headers";
 
 interface fetchNoteProps {
     query: string,
@@ -14,9 +15,14 @@ interface GetNotesResponse {
 }
 
 
-export const checkSession = async (cookies: string): Promise<User> => {
-    const response = await api.get('/auth/session', { headers: {cookie: cookies} });
-    return response.data;
+export const checkSession = async () => {
+    const cookieStore = await cookies();
+    const response = await api.get('/auth/session', {
+        headers: {
+            Cookie: cookieStore.toString(),
+        },
+    });
+    return response;
 }
 
 export const getMe = async (cookies: string): Promise<User> => {

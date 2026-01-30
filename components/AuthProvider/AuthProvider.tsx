@@ -1,8 +1,8 @@
 'use client'
 import { checkSession } from "@/lib/clientApi"
 import { authStore } from "@/lib/store/authStore"
-import { usePathname } from "next/navigation"
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
+import { getMe } from "@/lib/clientApi"
 import Loader from "../Loader/Loader"
 
 type Props = {
@@ -11,35 +11,34 @@ type Props = {
 
 export const AuthProvider = ({ children }: Props) => {
     
-    const [checkingSession, setCheckingSession] = useState(true);
 
-    const { setUser, clearIsAuthenticated } = authStore(); 
+    const { setUser, clearIsAuthenticated, setCheckingSession, checkingSession } = authStore(); 
 
-    const pathname = usePathname();
+   useEffect(() => {
+  const verify = async () => {
+    try {
+      setCheckingSession(true);
 
-    const privateRoutes = ['/profile', '/notes'];
+      const session = await checkSession();
+      if (!session) {
+        clearIsAuthenticated();
+        return;
+      }
 
-    const isPrivatePage = privateRoutes.some(route => pathname.startsWith(route));
+      const me = await getMe();
+      setUser(me);
 
-    useEffect(() => {
-        const verify = async () => {
-            try {
-                setCheckingSession(true);
-                const userSession = await checkSession();
-                if (userSession) {
-                    setUser(userSession)
-                } else if (isPrivatePage) {
-                    clearIsAuthenticated()
-                }
-            } catch {
-                clearIsAuthenticated();
-            } finally {
-                setCheckingSession(false);
-            }
-        }
-        verify();
-    }, [setUser, clearIsAuthenticated, isPrivatePage]);
+    } catch {
+      clearIsAuthenticated();
+    } finally {
+      setCheckingSession(false);
+    }
+  };
 
-    return (checkingSession ? <Loader /> :  children);
+  verify();
+}, [setUser, setCheckingSession, clearIsAuthenticated]);
+
+
+    return checkingSession ? <Loader /> :  children;
 
 }

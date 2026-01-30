@@ -33,7 +33,7 @@ export const logout = async () => {
   await api.post('/auth/logout');
 }
 
-export const checkSession = async (): Promise<User> => {
+export const checkSession = async (): Promise<User | null> => {
     const response = await api.get('/auth/session');
     return response.data;
 }
