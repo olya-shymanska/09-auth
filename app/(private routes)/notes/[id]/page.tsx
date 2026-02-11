@@ -2,7 +2,6 @@ import { getSingleNote } from "@/lib/api/serverApi";
 import NoteDetailsClient from "./NoteDetails.client";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 import { Metadata } from "next";
-import { cookies } from 'next/headers';
 
 
 type Props = {
@@ -10,11 +9,9 @@ type Props = {
 }
 
 export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
-    const cookieStore = await cookies();
-  const cookieString = cookieStore.getAll().map(c => `${c.name}=${c.value}`).join('; ');
 
     const { id } = await params;
-    const note = await getSingleNote(id, cookieString)
+    const note = await getSingleNote(id)
     return ({
         title: `NoteHub — ${note.title}`,
         description: `View your note: ${note.content} — manage, edit, and organize your notes easily with NoteHub.`,
@@ -38,12 +35,10 @@ const NoteDetailes = async ({params}: Props) => {
     const { id } = await params;
 
     const queryClient = new QueryClient();
-    const cookieStore = await cookies();
-    const cookieString = cookieStore.getAll().map(c => `${c.name}=${c.value}`).join('; ');
-
+    
     await queryClient.prefetchQuery({
         queryKey: ['note', id],
-        queryFn: () => getSingleNote(id, cookieString)
+        queryFn: () => getSingleNote(id)
     })
     
     return (

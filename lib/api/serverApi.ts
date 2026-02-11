@@ -25,21 +25,33 @@ export const checkSession = async () => {
     return response;
 }
 
-export const getMe = async (cookies: string): Promise<User> => {
-    const response = await api.get('/users/me', { headers: { cookie: cookies } })
+export const getMe = async (): Promise<User> => {
+    const cookieStore = await cookies();
+    const response = await api.get('/users/me', {
+        headers: { 
+        Cookie: cookieStore.toString(),
+        },
+    })
     return response.data;
 }
 
-export const fetchNotes = async (cookies: string, { query, page, tag }: fetchNoteProps): Promise<GetNotesResponse> => {
-
+export const fetchNotes = async ({ query, page, tag }: fetchNoteProps): Promise<GetNotesResponse> => {
+    const cookieStore = await cookies();
     const response = await api.get<GetNotesResponse>('/notes', {
-        headers: { cookie: cookies },
+        headers: {
+            Cookie: cookieStore.toString(),
+        },
         params: { search: query, page, perPage: 12, ...(tag ? { tag } : {}) },
     })
     return response.data;
 }
 
-export const getSingleNote = async (cookies: string, id: string): Promise<Note> => {
-    const response = await api.get(`/notes/${id}`, { headers: { cookie: cookies } })
+export const getSingleNote = async (id: string): Promise<Note> => {
+    const cookieStore = await cookies();
+    const response = await api.get(`/notes/${id}`, {
+        headers: {
+            Cookie: cookieStore.toString(),
+        },
+    })
     return response.data;
 }

@@ -2,7 +2,6 @@ import { fetchNotes } from "@/lib/api/serverApi";
 import { QueryClient, dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import NotesClient from './Notes.client';
 import { Metadata } from "next";
-import { cookies } from "next/headers";
 
 type Props = {
     params: Promise<{ slug: string[] }>
@@ -35,12 +34,10 @@ const NotesPage = async ({ params }: Props) => {
     const tag = slug[0];
 
     const queryClient = new QueryClient();
-    const cookieStore = await cookies();
-    const cookieString = cookieStore.getAll().map(c => `${c.name}=${c.value}`).join('; ');
 
     await queryClient.prefetchQuery({
         queryKey: ['notes', '', 1, tag],
-        queryFn: () => fetchNotes(cookieString, { query: '', page: 1, ...(tag !== 'All' ? { tag } : {}) })
+        queryFn: () => fetchNotes( { query: '', page: 1, ...(tag !== 'All' ? { tag } : {}) })
     });
 
     return (

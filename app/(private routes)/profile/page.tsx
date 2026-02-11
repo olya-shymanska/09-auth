@@ -1,6 +1,5 @@
 import { getMe } from "@/lib/api/serverApi";
 import { redirect } from "next/navigation";
-import { cookies } from "next/headers"
 import { User } from "@/types/user";
 import { isAxiosError } from "axios";
 import type { Metadata } from "next";
@@ -16,12 +15,10 @@ export const metadata: Metadata = {
 
 const Profile = async () => {
 
-     const cookieStore = await cookies();
-        const cookieString = cookieStore.getAll().map(c => `${c.name}=${c.value}`).join('; ');
         let user: User | null = null;
     let hasError = false;
     try {
-        user = await getMe(cookieString);
+        user = await getMe();
     } catch (error) {
         if (isAxiosError(error)) {
             if (error.response?.status === 401) {
